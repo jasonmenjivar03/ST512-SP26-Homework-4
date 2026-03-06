@@ -3,3 +3,48 @@ title: "ST512-SP26-Homework-4"
 author: "Jason Menjivar-Hernandez"
 format: pdf
 ---
+
+## Problem 1
+
+**a**
+
+| Source    | DF  | SS      | MS     | F-value | p-value  |
+|-----------|-----|---------|--------|---------|----------|
+| Treatment | 4   | 1010.56 | 252.4  | 29.84   | \<0.0001 |
+| Block     | 5   | 323.82  | 64.765 | 7.65    | 0.004    |
+| Error     | 20  | 169.33  | 8.4665 |         |          |
+| Total     | 29  | 1503.71 |        |         |          |
+
+**b**
+
+6 blocks were used in this experiment.
+
+**c**
+
+$Y_{ij} = \mu + \alpha_i + \beta_j + \epsilon_{ij}$
+
+$Y_{ij}$= observation for treatment i in block j
+
+$\mu$ = overall mean
+
+$\alpha_i$ = effect due to the i-th level of the factor, $\sum \alpha_i = 0$
+
+$\beta_j$= effect due to the j-th block effect, $\sum \beta_j = 0$
+
+$\epsilon_{ij}$ = random error ~N(0, $\sigma^2)$
+
+Assumptions: equal variance, independence, normality, additivity 
+
+**d** 
+
+Both treatment and block effects are significant. This means that the treatment means are not equal. Block means were also different. The blocking helped reduce experimental variability. 
+
+## R code
+
+**problem 1**
+
+```{r}
+1-pf(29.84,4,20) #part a
+
+1-pf(7.65, 5, 20) #part a 
+```
