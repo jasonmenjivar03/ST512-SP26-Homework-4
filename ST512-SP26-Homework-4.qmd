@@ -85,7 +85,7 @@ The residuals are centered around 0. There is no apparent pattern in the spread 
 
 The normality assumption can be satisfied, provided that the Q-Q plot looks normal. We can assume these samples are from a normal population using the shapiro-Wilk test. The test provided a p-value of 0.798. We satisfy all assumptions. 
 
-##Problem 3 
+## Problem 3 
 
 **a**
 
@@ -120,7 +120,63 @@ Based on the produced ANOVA table, the operator effect p-value is 0.9131 (>0.05)
 
 ## Problem 4 
 
+```{r, echo=FALSE}
+tire <- factor(rep(1:4, each = 3))
+compound <- factor(c("A", "B", "C", "A", "B", "D", "A", "C",
+"D", "B", "C", "D"))
+wear <- c(238, 238, 279, 196, 213, 308, 254, 334, 367, 312, 421,
+412)
+data2<-data.frame(tire, compound,wear)
+```
 
+**a**
+
+$H_o$: $\mu_A = \mu_B = \mu_C = \mu_D$ 
+
+$H_A$: at least one compound mean is different 
+
+```{r, echo=FALSE}
+model2 <- aov(wear~tire + compound, data = data2)
+summary(model2)
+```
+Decision rule: 
+
+$F_{0.95,3,5}$ = 5.41
+
+$F_obs$ = 19.73 
+
+19.73 > 5.41; reject $H_o$
+
+p-value= 0.0034
+
+Conclusion: There is significant evidence ($\alpha$ = 0.05) that compound type affects tire wear. 
+
+**b**
+
+$\hat{\mu}_A$ = 252.29
+
+MSE= 350 
+
+SE($\hat{\mu}_A$) = 11.30 
+
+t.crit = $t_{0.975,5}$ = 2.571
+
+95% CI: 252.29 $\pm$ 2.571 * 11.30
+
+(223.24, 281.34)
+
+**c**
+
+```{r}
+Tukeys<-TukeyHSD(model2, "compound")
+Tukeys
+```
+
+Compounds C and D produce significantly different wear than A and B. 
+
+```{r}
+plot(Tukeys)
+```
 
 ## R code
 
@@ -171,5 +227,14 @@ data1
 ```{r}
 model1 <- aov(kelvin ~ day + operator, data=data1)
 summary(model1)
+```
+**problem 4** 
+
+```{r}
+model2 <- aov(wear~tire + compound, data = data2)
+summary(model2) 
+
+qf(0.95,3,5)
+qt(0.975,5)
 ```
 
