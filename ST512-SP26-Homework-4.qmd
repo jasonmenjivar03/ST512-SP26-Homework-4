@@ -85,6 +85,42 @@ The residuals are centered around 0. There is no apparent pattern in the spread 
 
 The normality assumption can be satisfied, provided that the Q-Q plot looks normal. We can assume these samples are from a normal population using the shapiro-Wilk test. The test provided a p-value of 0.798. We satisfy all assumptions. 
 
+##Problem 3 
+
+**a**
+
+BIBD Model: $Y_{ij} = \mu + \alpha_i + \beta_j + \epsilon_{ij}$
+
+$Y_{ij}$= screen-color difference for operator i on day j
+
+$\mu$ = overall mean
+
+$\alpha_i$ = effect of operator i, $\sum \alpha_i = 0$
+
+$\beta_j$= effect day j, $\sum \beta_j = 0$
+
+$\epsilon_{ij}$ = random error ~N(0, $\sigma^2)$
+
+Assumptions: equal variance, independence, normality, additivity
+
+**b**
+
+```{r, echo=FALSE}
+day <- factor(rep(c("Monday", "Tuesday", "Wednesday",
+"Thursday"), each = 3))
+operator <- factor(c("A", "B", "C", "A", "C", "D", "B", "C",
+"D", "A", "B", "D"))
+kelvin <- c(780, 820, 800, 950, 920, 940, 880, 880, 820, 840,
+780, 820)
+data1<-data.frame(day, operator, kelvin)
+model1 <- aov(kelvin ~ day + operator, data=data1)
+summary(model1) 
+```
+Based on the produced ANOVA table, the operator effect p-value is 0.9131 (>0.05). Therefore, fail to reject our null hypothesis. There is insufficient evidence to conclude the operator effects, accounting for days as the blocking factor. 
+
+## Problem 4 
+
+
 
 ## R code
 
@@ -118,5 +154,22 @@ print(tukey)
 par(mfrow = c(2, 2))
 plot(model)
 shapiro.test(residuals(model))
+```
+**problem 3** 
+
+```{r}
+day <- factor(rep(c("Monday", "Tuesday", "Wednesday",
+"Thursday"), each = 3))
+operator <- factor(c("A", "B", "C", "A", "C", "D", "B", "C",
+"D", "A", "B", "D"))
+kelvin <- c(780, 820, 800, 950, 920, 940, 880, 880, 820, 840,
+780, 820)
+data1<-data.frame(day, operator, kelvin)
+data1
+```
+
+```{r}
+model1 <- aov(kelvin ~ day + operator, data=data1)
+summary(model1)
 ```
 
