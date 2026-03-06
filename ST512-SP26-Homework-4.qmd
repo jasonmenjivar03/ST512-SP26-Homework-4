@@ -31,13 +31,60 @@ $\alpha_i$ = effect due to the i-th level of the factor, $\sum \alpha_i = 0$
 
 $\beta_j$= effect due to the j-th block effect, $\sum \beta_j = 0$
 
+$\epsilon_{ij}$ = random error \~N(0, $\sigma^2)$
+
+Assumptions: equal variance, independence, normality, additivity
+
+**d**
+
+Both treatment and block effects are significant. This means that the treatment means are not equal. Block means were also different. The blocking helped reduce experimental variability.
+
+## Problem 2
+
+**a**
+
+$Y_{ij} = \mu + \alpha_i + \beta_j + \epsilon_{ij}$
+
+$Y_{ij}$= compressive strength for treatment i in batch j
+
+i= 1,2,3 j= 1,2,3,4,5
+
+$\mu$ = overall mean
+
+$\alpha_i$ = effect due to the i-th level of the drying method, $\sum \alpha_i = 0$
+
+$\beta_j$= effect due to the j-th batch effect, $\sum \beta_j = 0$
+
 $\epsilon_{ij}$ = random error ~N(0, $\sigma^2)$
 
-Assumptions: equal variance, independence, normality, additivity 
+Assumptions: equal variance, independence, normality, additivity
+
+**b**
+
+Based on a produced ANOVA table, the treatment p-value was 0.014. Therefore, suggesting there is strong evidence that at least one treatment mean differs from the others. 
+
+**c**
+
+q* = 4.0375
+
+HSD = $q* \sqrt{\frac{MS_E}{b}} = 4.0375 \sqrt{\frac{5.85}{5}}$ = 4.3672
+
+|$\bar{Y}_{B.} - \bar{Y}_{A.}$| = 4.6 > HSD; significant
+
+|$\bar{Y}_{B.} - \bar{Y}_{C.}$| = 5.6 > HSD; significant 
+
+|$\bar{Y}_{C.} - \bar{Y}_{A.}$| = 1.0 < HSD; not significant 
+
+Treatment B differs significantly from both treatments A and C. 
 
 **d** 
 
-Both treatment and block effects are significant. This means that the treatment means are not equal. Block means were also different. The blocking helped reduce experimental variability. 
+The residuals are centered around 0. There is no apparent pattern in the spread and no change. This suggests that the model is fit for this example and the equal variance assumption is satisfied. 
+
+**e**
+
+The normality assumption can be satisfied, provided that the Q-Q plot looks normal. We can assume these samples are from a normal population using the shapiro-Wilk test. The test provided a p-value of 0.798. We satisfy all assumptions. 
+
 
 ## R code
 
@@ -48,3 +95,28 @@ Both treatment and block effects are significant. This means that the treatment 
 
 1-pf(7.65, 5, 20) #part a 
 ```
+
+**problem 2**
+
+```{r}
+batch <- factor(rep(1:5, each = 3))
+treatment <- factor(rep(c("A", "B", "C"), times = 5))
+strength <- c(52, 60, 56, 47, 55, 48, 44, 49, 45, 51, 52, 44, 42, 43,
+38)
+data <- data.frame(batch, treatment, strength)
+
+model <- aov(strength ~ batch + treatment, data = data)
+summary(model)
+```
+
+```{r}
+tukey <- TukeyHSD(model, "treatment")
+print(tukey)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(model)
+shapiro.test(residuals(model))
+```
+
